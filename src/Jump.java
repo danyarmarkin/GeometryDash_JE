@@ -1,28 +1,28 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Calendar;
 
 public class Jump {
     private Character mCharacter;
     private int mLenth;
     private final int[] relativeX = {0};
-    private boolean mInJump = false;
+    private boolean mIsInJump = false;
     private int startY;
     private Timer mJumpTimer;
+    private int mHeight;
 
     Jump(Character character){
         mCharacter = character;
         startY = mCharacter.getY();
-        mJumpTimer = new Timer (10, new ActionListener() {
+        mJumpTimer = new Timer (20, new ActionListener() {
             public void actionPerformed (ActionEvent ev) {
                 if (relativeX[0] < mLenth - mCharacter.getJumpLength() / 2) {
-                    relativeX[0] += 10;
+                    relativeX[0] += 20;
                 } else {
-                    mInJump = false;
+                    mIsInJump = false;
                 }
                 int y;
-                y = (int) (mCharacter.getJumpHeight() - mCharacter.Jump() * relativeX[0] * relativeX[0]);
+                y = (int) (mHeight - mCharacter.Jump() * relativeX[0] * relativeX[0]);
                 mCharacter.setY(startY - y);
 //                System.out.println(mCharacter.getY());
             }
@@ -30,20 +30,21 @@ public class Jump {
         mJumpTimer.start();
     }
 
-    public void setLenth(int lenth, Character character) {
-        if (!mInJump){
+    public void setLenth(int lenth, Character character, int maxLenth, int maxHeight) {
+        if (!mIsInJump){
             mLenth = lenth;
-            relativeX[0] = -1 * Math.round(mCharacter.getJumpLength() / 2);
-            mInJump = true;
+            relativeX[0] = -1 * Math.round(maxLenth / 2);
+            mIsInJump = true;
             mCharacter = character;
             startY = mCharacter.getY();
             mJumpTimer.start();
+            mHeight = maxHeight;
         }
     }
 
     public void stop(){
         mJumpTimer.stop();
-        mInJump = false;
+        mIsInJump = false;
     }
 
     public Character getCharacter() {
@@ -54,4 +55,15 @@ public class Jump {
         mCharacter = character;
     }
 
+    public int getLenth() {
+        return mLenth;
+    }
+
+    public boolean isInJump() {
+        return mIsInJump;
+    }
+
+    public void setInJump(boolean inJump) {
+        mIsInJump = inJump;
+    }
 }

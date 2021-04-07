@@ -1,11 +1,15 @@
 package objects;
 
+import java.awt.*;
+
 public abstract class Object {
     int mX;
     int mY;
     int mHeight = 64;
     int mLength = 64;
-    Object (int x, int y){
+    Image mIcon;
+    Object (int x, int y, Image image){
+        mIcon = image;
         mX = x;
         mY = y;
     }
@@ -32,5 +36,18 @@ public abstract class Object {
 
     public int getLength() {
         return mLength;
+    }
+
+    public Image getIcon() {
+        return mIcon;
+    }
+
+    public void setIcon(Image icon) {
+        mIcon = icon;
+    }
+
+    public int[] getPosition() {
+        int[] pos = {getX(), getY()};
+        return pos;
     }
 }
